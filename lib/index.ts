@@ -1,4 +1,3 @@
-export function findEmojis(str: string): string {
+import UZ from './uz';
 
-  return str || 'err';
-}
+export default UZ;
