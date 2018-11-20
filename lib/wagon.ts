@@ -1,6 +1,6 @@
 import Requestable from './requestable';
 
-export default class Coach extends Requestable {
+export default class Wagon extends Requestable {
     /**
      * Construct station class.
      * @param {string} [lang] - language

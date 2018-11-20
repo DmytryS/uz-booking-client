@@ -35,21 +35,15 @@ export default class Requestable {
    METHODS_WITH_NO_BODY = ['GET', 'HEAD', 'DELETE'];
 
    /**
-    * Either a username and password or an oauth token for Github
-    * @typedef {Object} Requestable.auth
-    * @prop {string} [username] - the Github username
-    * @prop {string} [password] - the user's password
-    * @prop {token} [token] - an OAuth token
-    */
-   /**
     * Initialize the http internals.
-    * @param {Requestable.auth} [auth] - the credentials to authenticate to Github. If auth is
+    * @param {string} [lang] - language
+    * @param {Object} [auth] - the credentials to authenticate to Github. If auth is
     *                                  not provided request will be made unauthenticated
-    * @param {string} [apiBase='https://booking.uz.gov.ua/ru/'] - the base Github API URL
-    * @param {string} [AcceptHeader=v3] - the accept header for the requests
+    * @param {string} [apiBase] - the base UzBooking API URL
     */
-   constructor(lang = 'en', auth?: any, apiBase = '') {
-      this.apiBase = apiBase || lang === 'uk' ? 'https://booking.uz.gov.ua/' : `https://booking.uz.gov.ua/${lang}/`;
+   constructor(lang: string, auth: any, apiBase: string) {
+      this.apiBase = apiBase || lang === 'uk' ? apiBase : `${apiBase}/${lang}/`;
+      this.auth = auth;
    }
 
    /**
@@ -89,14 +83,6 @@ export default class Requestable {
       return headers;
    }
 
-
-   /**
-    * A function that receives the result of the API request.
-    * @callback Requestable.callback
-    * @param {Requestable.Error} error - the error returned by the API or `null`
-    * @param {(Object|true)} result - the data returned by the API or `true` if the API returns `204 No Content`
-    * @param {Object} request - the raw {@linkcode https://github.com/mzabriskie/axios#response-schema Response}
-    */
    /**
     * Make a request.
     * @param {string} method - the method for the request (GET, PUT, POST, DELETE)
