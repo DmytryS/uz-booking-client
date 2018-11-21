@@ -1,1 +1,3 @@
-export * from './uz';
+import UZ from './uz';
+
+export default UZ;

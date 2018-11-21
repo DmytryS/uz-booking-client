@@ -3,7 +3,7 @@ import Train from './train';
 import Coach from './coach';
 import Wagon from './wagon';
 
-export class UZ {
+export default class UZ {
     lang: string;
     auth: any;
     apiBase: string;

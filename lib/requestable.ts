@@ -11,6 +11,7 @@ class ResponseError extends Error {
    response: any;
    status: number;
    request: any;
+
    /**
     * Construct a new ResponseError
     * @param {string} message - an message to return instead of the the default error message

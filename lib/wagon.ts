@@ -1,5 +1,5 @@
 import Requestable from './requestable';
-
+import { Train } from './models';
 export default class Wagon extends Requestable {
     /**
      * Construct station class.
@@ -14,11 +14,34 @@ export default class Wagon extends Requestable {
 
     /**
      * Find station by name
-     * @param {string} stationName - the name of station
+     * @param {Train} train - the train object
+     * @param {string} wagonType - type of wagon
      * @param {Function} cb - callback function
      * @return {Promise} - the promise for the http request
      */
-    list(stationName: string, cb: Function) {
-        return this.request('POST', `train_wagons/`, null, cb);
+    list(train: Train, wagonType: string, cb: Function) {
+        const {
+            from: {
+                code: from,
+                srcDate: date
+            },
+            to: {
+                code: to 
+            },
+            num: trainNumber
+        } = train;
+
+        return this.request(
+            'POST',
+            'train_wagons/',
+            {
+                from,
+                to,
+                date,
+                train: trainNumber,
+                wagon_type_id: wagonType
+            },
+            cb
+        );
     }
 }
