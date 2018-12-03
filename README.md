@@ -19,22 +19,35 @@ const targetStations = await uzClient.Station.find('Lviv');
 const targetStation = targetStations.data[0];
 
 const trains = await uzClient.Train.find(
-    departureStation,
-    targetStation,
+    departureStation.value,
+    targetStation.value,
     ticketsDate.format('YYYY-MM-DD'),
     '00:00'
 );
 
 const train = trains.data.data.list[3];
-   
+
 if (train.types.length === 0) {
-    console.log('No free places in this train.');
+    console.log('No free places left in this train.');
 } else {
     const wagonTypes = train.types.map(type => type.letter)
-    const wagons = await uzClient.Wagon.list(train, wagonTypes[0]);
+    const wagons = await uzClient.Wagon.list(
+        departureStation.value,
+        targetStation.value,
+        ticketsDate.format('YYYY-MM-DD'),
+        train.num,
+        wagonTypes[0]
+    );
     const wagon = wagons.data.data.wagons[0];
-
-    const coaches = await uzClient.Coach.list(train, wagon)
+    const coaches = await uzClient.Coach.list(
+        departureStation.value,
+        targetStation.value,
+        ticketsDate.format('YYYY-MM-DD'),
+        train.num,
+        wagon.num,
+        wagon.type,
+        wagon.class
+    );
     console.log(coaches.data.data);
 }
 ```

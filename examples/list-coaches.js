@@ -21,7 +21,7 @@ async function main() {
     const train = trains.data.data.list[3];
     
     if (train.types.length === 0) {
-        console.log('No free places in this train.');
+        console.log('No free places left in this train.');
     } else {
         const wagonTypes = train.types.map(type => type.letter)
 
