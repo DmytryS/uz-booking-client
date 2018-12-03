@@ -15,20 +15,20 @@ export default class Train extends Requestable {
 
     /**
      * Find train
-     * @param {Station} departureStation - departure station object
-     * @param {Station} targetStation - target station object
+     * @param {number} from - departure station id
+     * @param {number} to - target station id
      * @param {string} date - departure date
      * @param {string} time - departure time
      * @param {Function} cb - callback function
      * @return {Promise} - the promise for the http request
      */
-    find(departureStation: Station, targetStation: Station, date: string, time: string, cb: Function) {
+    find(from: number, to: number, date: string, time: string, cb: Function) {
         return this.request(
             'POST',
             `train_search/`,
             {
-                from: departureStation.value,
-                to: targetStation.value,
+                from,
+                to,
                 date,
                 time
             },

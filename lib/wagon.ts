@@ -14,23 +14,15 @@ export default class Wagon extends Requestable {
 
     /**
      * Find station by name
-     * @param {Train} train - the train object
-     * @param {string} wagonType - type of wagon
+     * @param {number} from - departure station id
+     * @param {number} to - target station id
+     * @param {string} date - departure date
+     * @param {string} trainNumber - train number
+     * @param {string} wagonType - wagon type
      * @param {Function} cb - callback function
      * @return {Promise} - the promise for the http request
      */
-    list(train: Train, wagonType: string, cb: Function) {
-        const {
-            from: {
-                code: from,
-                srcDate: date
-            },
-            to: {
-                code: to 
-            },
-            num: trainNumber
-        } = train;
-
+    list(from: number, to: number, date: string, trainNumber: string, wagonType: string, cb: Function) {
         return this.request(
             'POST',
             'train_wagons/',

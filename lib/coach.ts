@@ -15,29 +15,17 @@ export default class Coach extends Requestable {
 
     /**
      * List coaches in wagon
-     * @param {Train} train - the train object
-     * @param {Wagon} wagon - the wagon object
+     * @param {number} from - departure station id
+     * @param {number} to - target station id
+     * @param {string} date - departure date
+     * @param {string} trainNumber - train number
+     * @param {number} wagon_num - wagon number
+     * @param {string} wagon_type - wagon type
+     * @param {string} wagon_class - wagon class
      * @param {Function} cb - callback function
      * @return {Promise} - the promise for the http request
      */
-    list(train: Train, wagon: Wagon, cb: Function) {
-        const {
-            from: {
-                code: from,
-                srcDate: date
-            },
-            to: {
-                code: to 
-            },
-            num: trainNumber
-        } = train;
-
-        const {
-            num: wagon_num,
-            type: wagon_type,
-            class: wagon_class
-        } = wagon;
-
+    list(from: number, to: number, date: string, trainNumber: string, wagon_num: number, wagon_type: string, wagon_class: string, cb: Function) {
         return this.request(
             'POST',
             'train_wagon/',

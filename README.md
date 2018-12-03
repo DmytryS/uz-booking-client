@@ -1,4 +1,4 @@
-# uz-booking-api
+# uz-booking-client
 Unofficial uz booking API client for Node.js. https://booking.uz.gov.ua/en/
 
 ## Usage

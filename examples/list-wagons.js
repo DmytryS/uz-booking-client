@@ -12,8 +12,8 @@ async function main() {
     const targetStation = targetStations.data[0];
 
     const trains = await uzClient.Train.find(
-        departureStation,
-        targetStation,
+        departureStation.value,
+        targetStation.value,
         ticketsDate.format('YYYY-MM-DD'),
         '00:00'
     );
@@ -25,7 +25,13 @@ async function main() {
     } else {
         const wagonTypes = train.types.map(type => type.letter)
 
-        const wagons = await uzClient.Wagon.list(train, wagonTypes[0]);
+        const wagons = await uzClient.Wagon.list(
+            departureStation.value,
+            targetStation.value,
+            ticketsDate.format('YYYY-MM-DD'),
+            train.num,
+            wagonTypes[0]
+        );
         console.log(wagons.data.data);
     }
 }

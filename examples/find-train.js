@@ -12,8 +12,8 @@ async function main() {
     const targetStation = targetStations.data[0];
 
     const trains = await uzClient.Train.find(
-        departureStation,
-        targetStation,
+        departureStation.value,
+        targetStation.value,
         ticketsDate.format('YYYY-MM-DD'),
         '00:00'
     );
