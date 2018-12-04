@@ -73,7 +73,7 @@ export default class Requestable {
    getRequestHeaders() {
       let headers: any = {
          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-         'Accept': 'application/json, text/javascript, */*; q=0.01',
+         'Accept': '*/*',
          'DNT': 1,
          'Host': 'booking.uz.gov.ua',
          'Referer': 'https://booking.uz.gov.ua/ru/',
@@ -142,7 +142,7 @@ export default class Requestable {
    private callbackErrorOrThrow(path: string, cb?: Function) {
       return function handler(object: any) {
          let error;
-         if (object.hasOwnProperty('config')) {
+         if (object.config && object.response && object.response.status && object.response.statusText) {
             const {response: {status, statusText}, config: {method, url}} = object;
             let message = (`${status} error making request ${method} ${url}: "${statusText}"`);
             error = new ResponseError(message, path, object);
