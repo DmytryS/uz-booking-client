@@ -1,7 +1,7 @@
 import Requestable from './requestable';
 
 export default class Station extends Requestable {
-    
+
     /**
      * Construct station class.
      * @param {string} [lang] - language
@@ -20,6 +20,6 @@ export default class Station extends Requestable {
      * @return {Promise} - the promise for the http request
      */
     find(stationName: string, cb: Function) {
-        return this.request('GET', `train_search/station/?term=${decodeURIComponent(stationName)}/`, null, cb);
+        return this.request('GET', `train_search/station/?term=${encodeURIComponent(stationName)}/`, null, cb);
     }
 }
