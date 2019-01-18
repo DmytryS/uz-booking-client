@@ -35,4 +35,27 @@ export default class Train extends Requestable {
             cb
         );
     }
+
+    /**
+     * Find train with interchanges
+     * @param {number} from - departure station id
+     * @param {number} to - target station id
+     * @param {string} date - departure date
+     * @param {string} time - departure time
+     * @param {Function} cb - callback function
+     * @return {Promise} - the promise for the http request
+     */
+    findInterchange(from: number, to: number, date: string, time: string, cb: Function) {
+        return this.request(
+            'POST',
+            `train_interchange/`,
+            {
+                from,
+                to,
+                date,
+                time
+            },
+            cb
+        );
+    }
 }
