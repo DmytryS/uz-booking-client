@@ -4,6 +4,24 @@ Unofficial uz booking API client for Node.js. https://booking.uz.gov.ua/en/
 
 [![travis build status](https://travis-ci.com/DmytryS/uz-booking-client.svg?branch=master)](https://travis-ci.com/DmytryS/uz-booking-client.svg?branch=master)
 
+## Installation
+
+Using npm:
+
+```shell
+$ npm i uz-booking-client
+```
+
+Note: add --save if you are using npm < 5.0.0
+
+In Node.js:
+
+```javascript
+import Client from 'uz-booking-client';
+//  or
+const Client = require('uz-booking-client');
+```
+
 ## Usage
 
 ```javascript
