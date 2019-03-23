@@ -1,0 +1,17 @@
+language: node_js
+node_js:
+  - "8"
+after_success:
+  - npm run lint
+  - npm run build #make a dist folder
+before_deploy:
+  - cd dist
+deploy:
+  provider: npm
+  email: $NPM_EMAIL
+  skip_cleanup: true
+  api_key:
+    secure: $NPM_TOKEN
+  on:
+    branch: master
+    tags: true
