@@ -2,7 +2,7 @@
 
 Unofficial uz booking API client for Node.js. https://booking.uz.gov.ua/en/
 
-[![travis build status](https://travis-ci.com/DmytryS/uz-booking-client.svg?branch=master)](https://travis-ci.com/DmytryS/uz-booking-client.svg?branch=master)
+[![travis build status](https://travis-ci.com/DmytryS/uz-booking-client.svg?branch=master)](https://travis-ci.com/DmytryS/uz-booking-client.svg?branch=master) [![npm version](https://badge.fury.io/js/uz-booking-client.svg)](https://badge.fury.io/js/uz-booking-client)
 
 ## Installation
 
