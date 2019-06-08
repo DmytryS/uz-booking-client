@@ -5,7 +5,7 @@ var __extends = (this && this.__extends) || (function () {
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
             function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
         return extendStatics(d, b);
-    }
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -35,12 +35,14 @@ var Train = /** @class */ (function (_super) {
      * @param {Function} cb - callback function
      * @return {Promise} - the promise for the http request
      */
-    Train.prototype.find = function (from, to, date, time, cb) {
-        return this.request('POST', "train_search/", {
-            from: from,
-            to: to,
+    Train.prototype.find = function (from, to, date, time, 
+    // tslint:disable-next-line
+    cb) {
+        return this.request('POST', 'train_search/', {
             date: date,
-            time: time
+            from: from,
+            time: time,
+            to: to
         }, cb);
     };
     /**
@@ -52,12 +54,14 @@ var Train = /** @class */ (function (_super) {
      * @param {Function} cb - callback function
      * @return {Promise} - the promise for the http request
      */
-    Train.prototype.findInterchange = function (from, to, date, time, cb) {
-        return this.request('POST', "train_interchange/", {
-            from: from,
-            to: to,
+    Train.prototype.findInterchange = function (from, to, date, time, 
+    // tslint:disable-next-line
+    cb) {
+        return this.request('POST', 'train_interchange/', {
             date: date,
-            time: time
+            from: from,
+            time: time,
+            to: to
         }, cb);
     };
     return Train;

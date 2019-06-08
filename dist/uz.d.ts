@@ -3,9 +3,9 @@ import Train from './train';
 import Coach from './coach';
 import Wagon from './wagon';
 export default class UZ {
-    lang: string;
-    auth: any;
-    apiBase: string;
+    private lang;
+    private auth;
+    private apiBase;
     /**
      * Create a new UZ.
      * @param {string} [lang='en'] - language

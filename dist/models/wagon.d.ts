@@ -1,4 +1,4 @@
-export default interface Wagon {
+export default interface IWagon {
     air: string | null;
     allowBonus: boolean;
     byWishes: boolean;
@@ -7,14 +7,14 @@ export default interface Wagon {
     hasBedding: boolean;
     num: number;
     obligatoryBedding: boolean;
-    prices: Prices;
+    prices: IPrices;
     railway: number;
     reservePrice: number;
-    services: Array<string>;
+    services: string[];
     type: string;
     type_id: string;
 }
-interface Prices {
+interface IPrices {
     A: number;
 }
 export {};

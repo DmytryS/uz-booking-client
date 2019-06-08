@@ -5,7 +5,7 @@ var __extends = (this && this.__extends) || (function () {
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
             function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
         return extendStatics(d, b);
-    }
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -36,11 +36,13 @@ var Wagon = /** @class */ (function (_super) {
      * @param {Function} cb - callback function
      * @return {Promise} - the promise for the http request
      */
-    Wagon.prototype.list = function (from, to, date, trainNumber, wagonType, cb) {
+    Wagon.prototype.list = function (from, to, date, trainNumber, wagonType, 
+    // tslint:disable-next-line
+    cb) {
         return this.request('POST', 'train_wagons/', {
+            date: date,
             from: from,
             to: to,
-            date: date,
             train: trainNumber,
             wagon_type_id: wagonType
         }, cb);

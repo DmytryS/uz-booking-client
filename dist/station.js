@@ -5,7 +5,7 @@ var __extends = (this && this.__extends) || (function () {
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
             function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
         return extendStatics(d, b);
-    }
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -32,6 +32,7 @@ var Station = /** @class */ (function (_super) {
      * @param {Function} cb - callback function
      * @return {Promise} - the promise for the http request
      */
+    // tslint:disable-next-line
     Station.prototype.find = function (stationName, cb) {
         return this.request('GET', "train_search/station/?term=" + encodeURIComponent(stationName) + "/", null, cb);
     };

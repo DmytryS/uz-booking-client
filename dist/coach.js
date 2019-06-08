@@ -5,7 +5,7 @@ var __extends = (this && this.__extends) || (function () {
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
             function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
         return extendStatics(d, b);
-    }
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -32,21 +32,23 @@ var Coach = /** @class */ (function (_super) {
      * @param {number} to - target station id
      * @param {string} date - departure date
      * @param {string} trainNumber - train number
-     * @param {number} wagon_num - wagon number
-     * @param {string} wagon_type - wagon type
-     * @param {string} wagon_class - wagon class
+     * @param {number} wagonNum - wagon number
+     * @param {string} wagonType - wagon type
+     * @param {string} wagonClass - wagon class
      * @param {Function} cb - callback function
      * @return {Promise} - the promise for the http request
      */
-    Coach.prototype.list = function (from, to, date, trainNumber, wagon_num, wagon_type, wagon_class, cb) {
+    Coach.prototype.list = function (from, to, date, trainNumber, wagonNum, wagonType, wagonClass, 
+    //  tslint:disable-next-line
+    cb) {
         return this.request('POST', 'train_wagon/', {
+            date: date,
             from: from,
             to: to,
             train: trainNumber,
-            date: date,
-            wagon_num: wagon_num,
-            wagon_type: wagon_type,
-            wagon_class: wagon_class
+            wagonClass: wagonClass,
+            wagonNum: wagonNum,
+            wagonType: wagonType
         }, cb);
     };
     return Coach;

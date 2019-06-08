@@ -5,7 +5,7 @@ var __extends = (this && this.__extends) || (function () {
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
             function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
         return extendStatics(d, b);
-    }
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -40,6 +40,7 @@ var ResponseError = /** @class */ (function (_super) {
 /**
  * Requestable wraps the logic for making http requests to the API
  */
+// tslint:disable-next-line
 var Requestable = /** @class */ (function () {
     /**
      * Initialize the http internals.
@@ -75,11 +76,11 @@ var Requestable = /** @class */ (function () {
      */
     Requestable.prototype.getRequestHeaders = function () {
         var headers = {
+            Accept: '*/*',
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-            'Accept': '*/*',
-            'DNT': 1,
-            'Host': 'booking.uz.gov.ua',
-            'Referer': 'https://booking.uz.gov.ua/ru/',
+            DNT: 1,
+            Host: 'booking.uz.gov.ua',
+            Referer: 'https://booking.uz.gov.ua/ru/',
             'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36',
             'X-Requested-With': 'XMLHttpRequest'
         };
@@ -96,7 +97,9 @@ var Requestable = /** @class */ (function () {
      *                              request will be made as JSON
      * @return {Promise} - the Promise for the http request
      */
-    Requestable.prototype.request = function (method, path, data, cb, raw) {
+    Requestable.prototype.request = function (method, path, data, 
+    // tslint:disable-next-line
+    cb, raw) {
         if (raw === void 0) { raw = false; }
         var url = this.getURL(path);
         var AcceptHeader = (data || {}).AcceptHeader;
@@ -105,18 +108,18 @@ var Requestable = /** @class */ (function () {
         }
         var headers = this.getRequestHeaders();
         var queryParams = {};
-        var shouldUseDataAsParams = data && (typeof data === 'object') && this.methodHasNoBody(method);
+        var shouldUseDataAsParams = data && typeof data === 'object' && this.methodHasNoBody(method);
         if (shouldUseDataAsParams) {
             queryParams = data;
             data = undefined;
         }
         var config = {
-            url: url,
-            method: method,
-            headers: headers,
-            params: queryParams,
             data: data ? this.encodeUrlForm(data) : data,
+            headers: headers,
+            method: method,
+            params: queryParams,
             responseType: raw ? 'text' : 'json',
+            url: url
         };
         log(config.method + " to " + config.url);
         var requestPromise = axios_1.default(config).catch(this.callbackErrorOrThrow(path, cb));
@@ -125,8 +128,9 @@ var Requestable = /** @class */ (function () {
                 if (response.data && Object.keys(response.data).length > 0) {
                     cb(null, response.data, response);
                 }
-                else if (config.method !== 'GET' && Object.keys(response.data).length < 1) {
-                    cb(null, (response.status < 300), response);
+                else if (config.method !== 'GET' &&
+                    Object.keys(response.data).length < 1) {
+                    cb(null, response.status < 300, response);
                 }
                 else {
                     cb(null, response.data, response);
@@ -135,12 +139,16 @@ var Requestable = /** @class */ (function () {
         }
         return requestPromise;
     };
+    // tslint:disable-next-line
     Requestable.prototype.callbackErrorOrThrow = function (path, cb) {
         return function handler(object) {
             var error;
-            if (object.config && object.response && object.response.status && object.response.statusText) {
+            if (object.config &&
+                object.response &&
+                object.response.status &&
+                object.response.statusText) {
                 var _a = object.response, status_1 = _a.status, statusText = _a.statusText, _b = object.config, method = _b.method, url = _b.url;
-                var message = (status_1 + " error making request " + method + " " + url + ": \"" + statusText + "\"");
+                var message = status_1 + " error making request " + method + " " + url + ": \"" + statusText + "\"";
                 error = new ResponseError(message, path, object);
                 log(message + " " + JSON.stringify(object.data));
             }

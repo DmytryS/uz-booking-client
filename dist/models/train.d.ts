@@ -1,4 +1,4 @@
-interface TrainStation {
+interface ITrainStation {
     code: string;
     station: string;
     stationTrain: string;
@@ -7,25 +7,25 @@ interface TrainStation {
     sortTime: number;
     srcDate: string;
 }
-interface Child {
+interface IChild {
     minDate: string;
     maxDate: string;
 }
-interface Types {
+interface ITypes {
     id: string;
     letter: string;
     places: number;
     title: string;
 }
-export default interface Train {
+export default interface ITrain {
     num: string;
     category: number;
     isTransformer: number;
     travelTime: string;
-    from: TrainStation;
-    to: TrainStation;
-    types: Array<Types>;
-    child: Child;
+    from: ITrainStation;
+    to: ITrainStation;
+    types: ITypes[];
+    child: IChild;
     allowStudent: number;
     allowBooking: number;
     isCis: number;
