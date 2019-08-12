@@ -47,7 +47,7 @@ export default class Requestable {
    * @param {string} [apiBase] - the base UzBooking API URL
    */
   constructor(lang: string, auth: any, apiBase: string) {
-    this.apiBase = `${apiBase}/api`;
+    this.apiBase = 'https://195.149.70.31/api/'; // `${apiBase}/api`;
     this.lang = lang;
     this.auth = auth;
   }
@@ -137,7 +137,6 @@ export default class Requestable {
     };
 
     log(`${config.method} to ${config.url}`);
-    console.log(`Config: ${inspect(config, { depth: 4, colors: true })}`);
 
     const requestPromise = axios(config).catch(
       this.callbackErrorOrThrow(path, cb)
@@ -210,14 +209,14 @@ export default class Requestable {
       uppercase: false
     });
 
-    return JSON.stringify({
+    return {
       ...data,
       datetime_utc,
       lang: 'en',
       os: 1,
       request_id: randomId,
       version: '1.011'
-    });
+    };
 
     // return Object.keys(data).reduce(
     //   (p, c) => p + `&${c}=${encodeURIComponent(data[c])}`,

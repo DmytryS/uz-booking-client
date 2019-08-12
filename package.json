@@ -7,8 +7,8 @@
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 0",
-    "lint": "prettier --list-different 'lib/**/*.ts' && tslint -p ./tsconfig.json",
-    "lint:fix": "prettier --write 'lib/**/*.ts' && tslint --fix --format stylish 'lib/**/*.ts' -p ./tsconfig.json"
+    "lint": "prettier --list-different 'src/**/*.ts' && tslint -p ./tsconfig.json",
+    "lint:fix": "prettier --write 'src/**/*.ts' && tslint --fix --format stylish 'src/**/*.ts' -p ./tsconfig.json"
   },
   "repository": {
     "type": "git",

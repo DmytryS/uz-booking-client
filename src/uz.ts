@@ -11,14 +11,14 @@ export default class UZ {
   /**
    * Create a new UZ.
    * @param {string} [lang='en'] - language
-   * @param {Object} [auth] - the credentials to authenticate to UzBoojking. If auth is
-   *                                  not provided requests will be made unauthenticated
    * @param {string} [apiBase='https://booking.uz.gov.ua/'] - the base UzBooking API URL
+   * @param {Object} [auth] - the credentials to authenticate to UzBoojking. If auth is
+   *                          not provided requests will be made unauthenticated
    */
   constructor(
     lang: 'en' | 'ru' | 'uk',
-    auth?: any,
-    apiBase = 'https://booking.uz.gov.ua'
+    apiBase = 'https://booking.uz.gov.ua',
+    auth?: any
   ) {
     this.lang = lang;
     this.auth = auth;

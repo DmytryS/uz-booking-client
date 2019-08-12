@@ -1,4 +1,4 @@
-const Client = require("../dist/src").default;
+const Client = require("../dist").default;
 const moment = require("moment");
 const util = require("util");
 
