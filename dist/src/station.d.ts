@@ -1,5 +1,5 @@
-import Requestable from './requestable';
-export default class Station extends Requestable {
+export default class Station {
+    lang: string;
     /**
      * Construct station class.
      * @param {string} [lang] - language
@@ -14,5 +14,5 @@ export default class Station extends Requestable {
      * @param {Function} cb - callback function
      * @return {Promise} - the promise for the http request
      */
-    find(stationName: string, cb: Function): Promise<void | import("axios").AxiosResponse<any>>;
+    find(stationName: string, cb: Function): Promise<any[]>;
 }

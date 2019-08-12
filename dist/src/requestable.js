@@ -27,6 +27,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = require("axios");
 var debug = require("debug");
 var generator = require("generate-password");
+var util_1 = require("util");
 var log = debug('uz:requestable');
 /**
  * The error structure returned when a network call fails
@@ -63,7 +64,8 @@ var Requestable = /** @class */ (function () {
      */
     function Requestable(lang, auth, apiBase) {
         this.METHODS_WITH_NO_BODY = ['GET', 'HEAD', 'DELETE'];
-        this.apiBase = lang === 'uk' ? apiBase : "" + apiBase + lang + "/";
+        this.apiBase = apiBase + "/api";
+        this.lang = lang;
         this.auth = auth;
     }
     /**
@@ -88,15 +90,15 @@ var Requestable = /** @class */ (function () {
      */
     Requestable.prototype.getRequestHeaders = function () {
         var headers = {
-            'Accept-Encoding': 'gzip',
-            'Content-Type': 'application/x-www-form-urlencoded',
+            // 'Accept-Encoding': 'gzip',
+            // 'Content-Type': 'application/x-www-form-urlencoded',
             // DNT: 1,
-            Host: 'booking.uz.gov.ua',
+            Host: 'booking.uz.gov.ua'
             // Referer: 'https://booking.uz.gov.ua/ru/',
             // 'User-Agent':
             //   'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36',
             // 'X-Requested-With': 'XMLHttpRequest'
-            'User-Agent': 'Dalvik / 2.1.0(Linux; U; Android 6.0; Android SDK built for x86 Build / MASTER)'
+            // 'User-Agent': 'Dalvik / 2.1.0(Linux; U; Android 6.0; Android SDK built for x86 Build / MASTER)'
         };
         return headers;
     };
@@ -128,7 +130,7 @@ var Requestable = /** @class */ (function () {
             data = undefined;
         }
         var config = {
-            data: data,
+            data: this.formatData(data),
             headers: headers,
             method: method,
             params: queryParams,
@@ -136,6 +138,7 @@ var Requestable = /** @class */ (function () {
             url: url
         };
         log(config.method + " to " + config.url);
+        console.log("Config: " + util_1.inspect(config, { depth: 4, colors: true }));
         var requestPromise = axios_1.default(config).catch(this.callbackErrorOrThrow(path, cb));
         if (cb) {
             requestPromise.then(function (response) {
@@ -182,7 +185,7 @@ var Requestable = /** @class */ (function () {
     Requestable.prototype.methodHasNoBody = function (method) {
         return this.METHODS_WITH_NO_BODY.indexOf(method) !== -1;
     };
-    Requestable.prototype.encodeUrlForm = function (form) {
+    Requestable.prototype.formatData = function (data) {
         var currentDate = new Date();
         var datetime_utc = currentDate.getUTCFullYear() + '-' +
             ('0' + (currentDate.getUTCMonth() + 1)).slice(-2) + '-' +
@@ -195,9 +198,11 @@ var Requestable = /** @class */ (function () {
             numbers: true,
             uppercase: false
         });
-        form = __assign({}, form, { datetime_utc: datetime_utc, lang: 'en', os: 1, request_id: randomId, version: '1.011' });
-        // console.log(111111, form)
-        return Object.keys(form).reduce(function (p, c) { return p + ("&" + c + "=" + encodeURIComponent(form[c])); }, '');
+        return JSON.stringify(__assign({}, data, { datetime_utc: datetime_utc, lang: 'en', os: 1, request_id: randomId, version: '1.011' }));
+        // return Object.keys(data).reduce(
+        //   (p, c) => p + `&${c}=${encodeURIComponent(data[c])}`,
+        //   ''
+        // );
     };
     return Requestable;
 }());

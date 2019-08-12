@@ -4,15 +4,13 @@ const util = require("util");
 
 async function main() {
   const ticketsDate = moment().add(10, "days");
-  const uzClient = new Client("ru");
+  const uzClient = new Client("en");
 
   const departureStations = await uzClient.Station.find("Kyiv");
-  const departureStation = departureStations.data[0];
+  const departureStation = departureStations[0];
 
   const targetStations = await uzClient.Station.find("Lviv");
-  const targetStation = targetStations.data[0];
-
-  console.log(111, departureStation.value);
+  const targetStation = targetStations[0];
 
   const trains = await uzClient.Train.find(
     departureStation.value,

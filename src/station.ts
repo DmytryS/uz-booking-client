@@ -1,6 +1,8 @@
-import Requestable from './requestable';
+// import Requestable from './requestable';
+import stations from './library/stations'
 
-export default class Station extends Requestable {
+export default class Station {
+  public lang: string;
   /**
    * Construct station class.
    * @param {string} [lang] - language
@@ -9,7 +11,8 @@ export default class Station extends Requestable {
    * @param {string} [apiBase] - the base UzBooking API URL
    */
   constructor(lang: string, auth: any, apiBase: string) {
-    super(lang, auth, apiBase);
+    // super(lang, auth, apiBase);
+    this.lang = lang;
   }
 
   /**
@@ -20,16 +23,37 @@ export default class Station extends Requestable {
    */
   // tslint:disable-next-line
   public find(stationName: string, cb: Function) {
-    return this.request(
-      'GET',
-      `train_search/station/?term=${encodeURIComponent(stationName)}/`,
-      {
-        data: {
-          term: stationName
-        },
-        tran_id: 'stations'
-      },
-      cb
-    );
+    const filteredStations: Array<any> = [];
+
+    for (const property in stations) {
+      if (stations.hasOwnProperty(property)) {
+        if (stations[property][this.lang] &&
+          stations[property][this.lang].title
+            .toLowerCase()
+            .startsWith(stationName.toLowerCase())
+        ) {
+          filteredStations.push({
+            title: stations[property][this.lang].title,
+            value: property,
+          });
+        }
+      }
+    }
+    // console.log();
+
+    return Promise.resolve(filteredStations);
+
+    // return this.request(
+    //   'POST',
+    //   // `train_search/station/?term=${encodeURIComponent(stationName)}/`,
+    //   '',
+    //   {
+    //     data: {
+    //       term: stationName
+    //     },
+    //     tran_id: 'stations'
+    //   },
+    //   cb
+    // );
   }
 }

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as debug from 'debug';
 import * as generator from 'generate-password';
+import { inspect } from 'util';
 
 const log = debug('uz:requestable');
 
@@ -35,6 +36,7 @@ class ResponseError extends Error {
 export default class Requestable {
   public apiBase: string;
   public auth: any;
+  public lang: string;
   public METHODS_WITH_NO_BODY = ['GET', 'HEAD', 'DELETE'];
 
   /**
@@ -45,7 +47,8 @@ export default class Requestable {
    * @param {string} [apiBase] - the base UzBooking API URL
    */
   constructor(lang: string, auth: any, apiBase: string) {
-    this.apiBase = lang === 'uk' ? apiBase : `${apiBase}${lang}/`;
+    this.apiBase = `${apiBase}/api`;
+    this.lang = lang;
     this.auth = auth;
   }
 
@@ -74,15 +77,15 @@ export default class Requestable {
    */
   public getRequestHeaders() {
     const headers: any = {
-      'Accept-Encoding': 'gzip',
-      'Content-Type': 'application/x-www-form-urlencoded',
+      // 'Accept-Encoding': 'gzip',
+      // 'Content-Type': 'application/x-www-form-urlencoded',
       // DNT: 1,
-      Host: 'booking.uz.gov.ua',
+      Host: 'booking.uz.gov.ua'
       // Referer: 'https://booking.uz.gov.ua/ru/',
       // 'User-Agent':
       //   'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36',
       // 'X-Requested-With': 'XMLHttpRequest'
-      'User-Agent': 'Dalvik / 2.1.0(Linux; U; Android 6.0; Android SDK built for x86 Build / MASTER)'
+      // 'User-Agent': 'Dalvik / 2.1.0(Linux; U; Android 6.0; Android SDK built for x86 Build / MASTER)'
     };
 
     return headers;
@@ -125,7 +128,7 @@ export default class Requestable {
     }
 
     const config = {
-      data: data,
+      data: this.formatData(data),
       headers,
       method,
       params: queryParams,
@@ -134,6 +137,7 @@ export default class Requestable {
     };
 
     log(`${config.method} to ${config.url}`);
+    console.log(`Config: ${inspect(config, { depth: 4, colors: true })}`);
 
     const requestPromise = axios(config).catch(
       this.callbackErrorOrThrow(path, cb)
@@ -190,7 +194,7 @@ export default class Requestable {
     return this.METHODS_WITH_NO_BODY.indexOf(method) !== -1;
   }
 
-  private encodeUrlForm(form: any): string {
+  private formatData(data: any): string {
     const currentDate: Date = new Date();
     const datetime_utc =
       currentDate.getUTCFullYear() + '-' +
@@ -206,20 +210,18 @@ export default class Requestable {
       uppercase: false
     });
 
-    form = {
-      ...form,
+    return JSON.stringify({
+      ...data,
       datetime_utc,
       lang: 'en',
       os: 1,
       request_id: randomId,
       version: '1.011'
-    };
+    });
 
-    // console.log(111111, form)
-
-    return Object.keys(form).reduce(
-      (p, c) => p + `&${c}=${encodeURIComponent(form[c])}`,
-      ''
-    );
+    // return Object.keys(data).reduce(
+    //   (p, c) => p + `&${c}=${encodeURIComponent(data[c])}`,
+    //   ''
+    // );
   }
 }

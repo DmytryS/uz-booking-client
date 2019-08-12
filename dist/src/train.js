@@ -45,6 +45,7 @@ var Train = /** @class */ (function (_super) {
                 date: date,
                 from_code: from,
                 time_from: time,
+                time_to: '23:59:59',
                 to_code: to
             },
             tran_id: 'trains'

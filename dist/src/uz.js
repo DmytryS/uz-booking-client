@@ -13,7 +13,7 @@ var UZ = /** @class */ (function () {
      * @param {string} [apiBase='https://booking.uz.gov.ua/'] - the base UzBooking API URL
      */
     function UZ(lang, auth, apiBase) {
-        if (apiBase === void 0) { apiBase = 'https://booking.uz.gov.ua/'; }
+        if (apiBase === void 0) { apiBase = 'https://booking.uz.gov.ua'; }
         this.lang = lang;
         this.auth = auth;
         this.apiBase = apiBase;

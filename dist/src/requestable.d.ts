@@ -4,6 +4,7 @@
 export default class Requestable {
     apiBase: string;
     auth: any;
+    lang: string;
     METHODS_WITH_NO_BODY: string[];
     /**
      * Initialize the http internals.
@@ -42,5 +43,5 @@ export default class Requestable {
     request(method: string, path: string, data: any, cb?: Function, raw?: boolean): Promise<void | import("axios").AxiosResponse<any>>;
     private callbackErrorOrThrow;
     private methodHasNoBody;
-    private encodeUrlForm;
+    private formatData;
 }

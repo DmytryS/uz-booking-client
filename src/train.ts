@@ -29,6 +29,9 @@ export default class Train extends Requestable {
     // tslint:disable-next-line
     cb: Function
   ) {
+
+
+
     return this.request(
       'POST',
       // 'train_search/',
@@ -38,6 +41,7 @@ export default class Train extends Requestable {
           date,
           from_code: from,
           time_from: time,
+          time_to: '23:59:59',
           to_code: to
         },
         tran_id: 'trains'
