@@ -1,4 +1,4 @@
-const Client = require("../dist").default;
+const Client = require("../dist/src").default;
 
 async function main() {
   const uzClient = new Client("ru");
