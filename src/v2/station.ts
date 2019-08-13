@@ -1,5 +1,5 @@
 // import Requestable from './requestable';
-import stations from './library/stations'
+import stations from '../assets/stations/stations';
 
 export default class Station {
   public lang: string;
@@ -27,33 +27,20 @@ export default class Station {
 
     for (const property in stations) {
       if (stations.hasOwnProperty(property)) {
-        if (stations[property][this.lang] &&
+        if (
+          stations[property][this.lang] &&
           stations[property][this.lang].title
             .toLowerCase()
             .startsWith(stationName.toLowerCase())
         ) {
           filteredStations.push({
             title: stations[property][this.lang].title,
-            value: property,
+            value: property
           });
         }
       }
     }
-    // console.log();
 
     return Promise.resolve(filteredStations);
-
-    // return this.request(
-    //   'POST',
-    //   // `train_search/station/?term=${encodeURIComponent(stationName)}/`,
-    //   '',
-    //   {
-    //     data: {
-    //       term: stationName
-    //     },
-    //     tran_id: 'stations'
-    //   },
-    //   cb
-    // );
   }
 }

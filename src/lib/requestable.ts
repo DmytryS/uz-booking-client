@@ -96,6 +96,7 @@ export default class Requestable {
    * @param {string} method - the method for the request (GET, PUT, POST, DELETE)
    * @param {string} path - the path for the request
    * @param {*} [data] - the data to send to the server. For HTTP methods that don't have a body the data
+   * @param {string} [dataType='json'] - type of data to send
    *                   will be sent as query parameters
    * @param {Requestable.callback} [cb] - the callback for the request
    * @param {boolean} [raw=false] - if the request should be sent as raw. If this is a falsy value then the
@@ -106,6 +107,7 @@ export default class Requestable {
     method: string,
     path: string,
     data: any,
+    dataType = 'json',
     // tslint:disable-next-line
     cb?: Function,
     raw = false
@@ -127,8 +129,15 @@ export default class Requestable {
       data = undefined;
     }
 
+    let formatedData = null;
+
+    if (data) {
+      formatedData =
+        dataType === 'json' ? this.formatData(data) : this.encodeUrlForm(data);
+    }
+
     const config = {
-      data: this.formatData(data),
+      data: formatedData,
       headers,
       method,
       params: queryParams,
@@ -195,12 +204,18 @@ export default class Requestable {
 
   private formatData(data: any): string {
     const currentDate: Date = new Date();
+    // tslint:disable-next-line: variable-name
     const datetime_utc =
-      currentDate.getUTCFullYear() + '-' +
-      ('0' + (currentDate.getUTCMonth() + 1)).slice(-2) + '-' +
-      ('0' + currentDate.getUTCDate()).slice(-2) + ' ' +
-      ('0' + currentDate.getUTCHours()).slice(-2) + ':' +
-      ('0' + currentDate.getUTCMinutes()).slice(-2) + ':' +
+      currentDate.getUTCFullYear() +
+      '-' +
+      ('0' + (currentDate.getUTCMonth() + 1)).slice(-2) +
+      '-' +
+      ('0' + currentDate.getUTCDate()).slice(-2) +
+      ' ' +
+      ('0' + currentDate.getUTCHours()).slice(-2) +
+      ':' +
+      ('0' + currentDate.getUTCMinutes()).slice(-2) +
+      ':' +
       ('0' + currentDate.getUTCSeconds()).slice(-2);
 
     const randomId = generator.generate({
@@ -212,15 +227,17 @@ export default class Requestable {
     return {
       ...data,
       datetime_utc,
-      lang: 'en',
+      lang: this.lang,
       os: 1,
       request_id: randomId,
       version: '1.011'
     };
+  }
 
-    // return Object.keys(data).reduce(
-    //   (p, c) => p + `&${c}=${encodeURIComponent(data[c])}`,
-    //   ''
-    // );
+  private encodeUrlForm(form: any): string {
+    return Object.keys(form).reduce(
+      (p, c) => p + `&${c}=${encodeURIComponent(form[c])}`,
+      ''
+    );
   }
 }

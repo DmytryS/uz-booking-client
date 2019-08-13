@@ -1,3 +1,9 @@
-import UZ from './uz';
+import apiV1 from './v1';
+import apiV2 from './v2';
 
-export default UZ;
+const api = {
+  apiV1,
+  apiV2
+};
+
+export default api;

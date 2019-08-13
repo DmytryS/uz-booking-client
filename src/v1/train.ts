@@ -1,5 +1,6 @@
-import Requestable from './requestable';
-import { Station } from './models';
+import Requestable from '../lib/requestable';
+import { Station } from '../models';
+
 export default class Train extends Requestable {
   /**
    * Construct station class.
@@ -29,13 +30,9 @@ export default class Train extends Requestable {
     // tslint:disable-next-line
     cb: Function
   ) {
-
-
-
     return this.request(
       'POST',
-      // 'train_search/',
-      '',
+      'train_search/',
       {
         data: {
           date,
@@ -46,6 +43,7 @@ export default class Train extends Requestable {
         },
         tran_id: 'trains'
       },
+      'form',
       cb
     );
   }
@@ -76,6 +74,7 @@ export default class Train extends Requestable {
         time,
         to
       },
+      'form',
       cb
     );
   }

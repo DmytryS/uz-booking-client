@@ -1,8 +1,6 @@
-// import Requestable from './requestable';
-import stations from './library/stations'
+import Requestable from '../lib/requestable';
 
-export default class Station {
-  public lang: string;
+export default class Station extends Requestable {
   /**
    * Construct station class.
    * @param {string} [lang] - language
@@ -11,8 +9,7 @@ export default class Station {
    * @param {string} [apiBase] - the base UzBooking API URL
    */
   constructor(lang: string, auth: any, apiBase: string) {
-    // super(lang, auth, apiBase);
-    this.lang = lang;
+    super(lang, auth, apiBase);
   }
 
   /**
@@ -23,37 +20,12 @@ export default class Station {
    */
   // tslint:disable-next-line
   public find(stationName: string, cb: Function) {
-    const filteredStations: Array<any> = [];
-
-    for (const property in stations) {
-      if (stations.hasOwnProperty(property)) {
-        if (stations[property][this.lang] &&
-          stations[property][this.lang].title
-            .toLowerCase()
-            .startsWith(stationName.toLowerCase())
-        ) {
-          filteredStations.push({
-            title: stations[property][this.lang].title,
-            value: property,
-          });
-        }
-      }
-    }
-    // console.log();
-
-    return Promise.resolve(filteredStations);
-
-    // return this.request(
-    //   'POST',
-    //   // `train_search/station/?term=${encodeURIComponent(stationName)}/`,
-    //   '',
-    //   {
-    //     data: {
-    //       term: stationName
-    //     },
-    //     tran_id: 'stations'
-    //   },
-    //   cb
-    // );
+    return this.request(
+      'POST',
+      `train_search/station/?term=${encodeURIComponent(stationName)}/`,
+      null,
+      'form',
+      cb
+    );
   }
 }

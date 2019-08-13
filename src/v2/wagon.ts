@@ -1,5 +1,6 @@
-import Requestable from './requestable';
-import { Train } from './models';
+import Requestable from '../lib/requestable';
+import { Train } from '../models';
+
 export default class Wagon extends Requestable {
   /**
    * Construct station class.
@@ -33,7 +34,7 @@ export default class Wagon extends Requestable {
   ) {
     return this.request(
       'POST',
-      'train_wagons/',
+      '',
       {
         date,
         from,
@@ -41,6 +42,7 @@ export default class Wagon extends Requestable {
         train: trainNumber,
         wagon_type_id: wagonType
       },
+      'json',
       cb
     );
   }

@@ -1,5 +1,5 @@
-import Requestable from './requestable';
-import { Train, Wagon } from './models';
+import Requestable from '../lib/requestable';
+import { Train, Wagon } from '../models';
 
 export default class Coach extends Requestable {
   /**
@@ -38,7 +38,7 @@ export default class Coach extends Requestable {
   ) {
     return this.request(
       'POST',
-      'train_wagon/',
+      '',
       {
         date,
         from,
@@ -48,6 +48,7 @@ export default class Coach extends Requestable {
         wagonNum,
         wagonType
       },
+      'json',
       cb
     );
   }
