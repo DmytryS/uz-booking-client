@@ -7,8 +7,8 @@
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 0",
-    "lint": "prettier --list-different 'src/**/*.ts' && tslint -p ./tsconfig.json",
-    "lint:fix": "prettier --write 'src/**/*.ts' && tslint --fix --format stylish 'src/**/*.ts' -p ./tsconfig.json"
+    "lint": "tslint -p ./tsconfig.json",
+    "lint:fix": "tslint --fix --format stylish 'src/**/*.ts' -p ./tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -29,9 +29,7 @@
   "devDependencies": {
     "@types/debug": "0.0.31",
     "eslint-config-airbnb-base": "^14.0.0",
-    "prettier": "^1.16.4",
     "tslint": "^5.14.0",
-    "tslint-plugin-prettier": "^2.0.1",
     "typescript": "^3.1.6"
   },
   "dependencies": {
@@ -40,8 +38,5 @@
     "debug": "^4.1.0",
     "generate-password": "^1.4.2",
     "moment": "^2.22.2"
-  },
-  "prettier": {
-    "singleQuote": true
   }
 }

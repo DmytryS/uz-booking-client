@@ -1,3 +1,4 @@
+/* tslint:disable */
 import IStation from './IStation';
 
 const stations: IStation = {

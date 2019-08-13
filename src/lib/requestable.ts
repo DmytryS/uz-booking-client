@@ -224,6 +224,10 @@ export default class Requestable {
       uppercase: false
     });
 
+    for (const k of data.data) {
+      data.data[k] = encodeURIComponent(data.data[k]);
+    }
+
     return {
       ...data,
       datetime_utc,

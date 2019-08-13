@@ -36,11 +36,13 @@ export default class Wagon extends Requestable {
       'POST',
       '',
       {
-        date,
-        from,
-        to,
-        train: trainNumber,
-        wagon_type_id: wagonType
+        data: {
+          date,
+          from_code: from,
+          to_code: to,
+          train: trainNumber
+        },
+        tran_id: 'wagons'
       },
       'json',
       cb

@@ -23,7 +23,7 @@ export default class Station {
    */
   // tslint:disable-next-line
   public find(stationName: string, cb: Function) {
-    const filteredStations: Array<any> = [];
+    const filteredStations: any = [];
 
     for (const property in stations) {
       if (stations.hasOwnProperty(property)) {
