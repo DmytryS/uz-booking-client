@@ -47,7 +47,7 @@ export default class Requestable {
    * @param {string} [apiBase] - the base UzBooking API URL
    */
   constructor(lang: string, auth: any, apiBase: string) {
-    this.apiBase = 'https://195.149.70.31/api/'; // `${apiBase}/api`;
+    this.apiBase = `${apiBase}/api/`;
     this.lang = lang;
     this.auth = auth;
   }

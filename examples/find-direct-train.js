@@ -19,7 +19,7 @@ async function main() {
     "00:00:00"
   );
 
-  console.log(util.inspect(trains.data, { colors: true, depth: 4 }));
+  console.log(util.inspect(trains.data, { colors: true, depth: 7 }));
 }
 
 main();
