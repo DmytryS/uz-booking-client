@@ -1,10 +1,18 @@
 {
-    "compilerOptions": {
-      "target": "es5",
-      "module": "commonjs",
-      "declaration": true,
-      "outDir": "./dist",
-      "strict": true,
-      "moduleResolution": "node"
-    }
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "es2017",
+      "scripthost",
+      "dom"
+    ],
+    "types": [
+      "node"
+    ],
+    "module": "commonjs",
+    "declaration": true,
+    "outDir": "./dist",
+    "strict": true,
+    "moduleResolution": "node"
+  }
 }

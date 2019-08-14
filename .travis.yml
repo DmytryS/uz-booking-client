@@ -1,11 +1,13 @@
 language: node_js
 node_js:
-  - "8"
+  - "12"
+
 after_success:
   - npm run lint
-  - npm run build #make a dist folder
+  - npm run build
 before_deploy:
   - cd dist
+
 deploy:
   provider: npm
   email: $NPM_EMAIL

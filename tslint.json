@@ -1,23 +1,31 @@
 {
   "defaultSeverity": "error",
-  "include": ["lib/**/*.ts"],
-  "exclude": ["node_modules"],
-  "extends": ["tslint:recommended"],
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/assets"
+  ],
+  "extends": [
+    "tslint:recommended"
+  ],
   "rules": {
     "no-console": true,
     "no-debugger": true,
     "no-use-before-declare": false,
-    "prettier": [
+    "quotemark": [
       true,
-      {
-        "singleQuote": true
-      }
+      "single",
+      "avoid-escape",
+      "avoid-template"
     ],
-    "quotemark": [true, "single", "avoid-escape", "avoid-template"],
     "trailing-comma": false,
     "arrow-parens": true,
     "ordered-imports": false,
-    "object-literal-key-quotes": [true, "as-needed"]
-  },
-  "rulesDirectory": ["tslint-plugin-prettier"]
+    "object-literal-key-quotes": [
+      true,
+      "as-needed"
+    ]
+  }
 }
