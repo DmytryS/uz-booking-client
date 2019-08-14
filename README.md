@@ -17,9 +17,9 @@ Note: add --save if you are using npm < 5.0.0
 In Node.js:
 
 ```javascript
-import Client from 'uz-booking-client';
+import Client from "uz-booking-client";
 //  or
-const Client = require('uz-booking-client');
+const Client = require("uz-booking-client");
 ```
 
 ## Usage
@@ -30,46 +30,46 @@ const Client = require('uz-booking-client');
    or using a new promise-based API. The promise-based API returns the raw Axios
    request promise.
  */
-import Client from 'uz-booking-client';
+import Client from "uz-booking-client";
 
-const ticketsDate = moment().add(10, 'days');
-const uzClient = new Client('ru');
+const ticketsDate = moment().add(10, "days");
+const uzClient = new Client.apiV2("en");
 
-const departureStations = await uzClient.Station.find('Kyiv');
+const departureStations = await uzClient.Station.find("Kyiv");
 const departureStation = departureStations.data[0];
 
-const targetStations = await uzClient.Station.find('Lviv');
+const targetStations = await uzClient.Station.find("Lviv");
 const targetStation = targetStations.data[0];
 
 const trains = await uzClient.Train.find(
   departureStation.value,
   targetStation.value,
-  ticketsDate.format('YYYY-MM-DD'),
-  '00:00'
+  ticketsDate.format("YYYY-MM-DD"),
+  "00:00"
 );
 
-const train = trains.data.data.list[3];
+const train = trains.data.data.trains[0]
 
-if (train.types.length === 0) {
-  console.log('No free places left in this train.');
+if (train.wagon_types.length === 0) {
+  console.log("No free places left in this train.");
 } else {
   const wagonTypes = train.types.map(type => type.letter);
   const wagons = await uzClient.Wagon.list(
-    departureStation.value,
-    targetStation.value,
-    ticketsDate.format('YYYY-MM-DD'),
-    train.num,
-    wagonTypes[0]
+      departureStation.value,
+      targetStation.value,
+      ticketsDate.format("YYYY-MM-DD"),
+      train.number
   );
+
   const wagon = wagons.data.data.wagons[0];
   const coaches = await uzClient.Coach.list(
-    departureStation.value,
-    targetStation.value,
-    ticketsDate.format('YYYY-MM-DD'),
-    train.num,
-    wagon.num,
-    wagon.type,
-    wagon.class
+      departureStation.value,
+      targetStation.value,
+      ticketsDate.format("YYYY-MM-DD"),
+      train.number,
+      wagon.num,
+      wagon.type,
+      wagon.class
   );
 
   console.log(coaches.data.data);
