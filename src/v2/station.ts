@@ -41,6 +41,6 @@ export default class Station {
       }
     }
 
-    return Promise.resolve(filteredStations);
+    return Promise.resolve({ data: filteredStations });
   }
 }

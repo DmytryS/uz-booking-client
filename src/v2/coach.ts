@@ -36,22 +36,6 @@ export default class Coach extends Requestable {
     //  tslint:disable-next-line
     cb: Function
   ) {
-
-    console.log({
-      data: {
-        date,
-        from_code: from,
-        to_code: to,
-        train: trainNumber,
-        train_model: 0,
-        wagon_class: wagonClass,
-        wagon_number: wagonNum,
-        wagon_type: wagonType,
-      },
-      tran_id: 'wagons'
-    });
-
-
     return this.request(
       'POST',
       '',
@@ -66,7 +50,7 @@ export default class Coach extends Requestable {
           wagon_number: wagonNum,
           wagon_type: wagonType,
         },
-        tran_id: 'wagons'
+        tran_id: 'wagon'
       },
       'json',
       cb

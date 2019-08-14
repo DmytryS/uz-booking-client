@@ -224,9 +224,9 @@ export default class Requestable {
       uppercase: false
     });
 
-    for (const k of data.data) {
-      data.data[k] = encodeURIComponent(data.data[k]);
-    }
+    // for (const k of Object.keys(data.data).filter((t) => ['train', 'wagon_type'].includes(t))) {
+    //   data.data[k] = encodeURIComponent(data.data[k]);
+    // }
 
     return {
       ...data,

@@ -69,10 +69,14 @@ export default class Train extends Requestable {
       'POST',
       '',
       {
-        date,
-        from,
-        time,
-        to
+        data: {
+          date,
+          from_code: from,
+          time_from: time,
+          time_to: '23:59:59',
+          to_code: to
+        },
+        tran_id: 'trains_transfer'
       },
       'json',
       cb

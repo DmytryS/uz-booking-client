@@ -1,5 +1,6 @@
 const Client = require("../../dist").default;
 const moment = require("moment");
+const { inspect } = require("util");
 
 async function main() {
   const ticketsDate = moment().add(10, "days");
@@ -18,7 +19,7 @@ async function main() {
     "00:00"
   );
 
-  console.log(trains.data);
+  console.log(inspect(trains.data, { colors: true, depth: 7 }));
 }
 
 main();
