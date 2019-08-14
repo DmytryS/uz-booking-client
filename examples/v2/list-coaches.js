@@ -1,4 +1,4 @@
-const Client = require("../dist").default;
+const Client = require("../../dist").default;
 const moment = require("moment");
 
 async function main() {
@@ -15,7 +15,7 @@ async function main() {
     departureStation.value,
     targetStation.value,
     ticketsDate.format("YYYY-MM-DD"),
-    "00:00:00"
+    "00:00"
   );
 
   const train = trains.data.data.trains[3];
@@ -23,13 +23,32 @@ async function main() {
   if (train.wagon_types.length === 0) {
     console.log("No free places left in this train.");
   } else {
+    // const wagonTypes = train.wagon_types.map(type => type.type);
+
     const wagons = await uzClient.Wagon.list(
       departureStation.value,
       targetStation.value,
       ticketsDate.format("YYYY-MM-DD"),
       train.number,
+      // wagonTypes[0]
     );
-    console.log(wagons.data.data);
+
+    // console.log(111, wagons.data.data.wagons);
+
+
+    const wagon = wagons.data.data.wagons[0];
+
+    const coaches = await uzClient.Coach.list(
+      departureStation.value,
+      targetStation.value,
+      ticketsDate.format("YYYY-MM-DD"),
+      train.number,
+      wagon.num,
+      wagon.type,
+      wagon.class
+    );
+
+    console.log(coaches.data.data);
   }
 }
 
