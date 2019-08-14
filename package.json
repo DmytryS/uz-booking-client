@@ -8,6 +8,8 @@
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 0",
     "lint": "tslint -p ./tsconfig.json",
+    "preversion": "npm run lint",
+    "postversion": "git push && git push --tags",
     "lint:fix": "tslint --fix --format stylish 'src/**/*.ts' -p ./tsconfig.json"
   },
   "repository": {
