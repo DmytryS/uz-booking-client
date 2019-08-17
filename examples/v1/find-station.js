@@ -1,4 +1,4 @@
-const Client = require("../../dist").default;
+const Client = require("../../dist");
 
 async function main() {
   const uzClient = new Client.ApiV1("en");

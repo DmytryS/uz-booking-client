@@ -1,4 +1,4 @@
-const Client = require("../../dist").default;
+const Client = require("../../dist");
 const moment = require("moment");
 
 async function main() {

@@ -1,9 +1,9 @@
-const Client = require("../../dist").default;
+const Client = require("../../dist");
 const moment = require("moment");
 const { inspect } = require("util");
 
 async function main() {
-  const ticketsDate = moment().add(10, "days");
+  const ticketsDate = moment().add(20, "days");
   const uzClient = new Client.ApiV2("en");
 
   const departureStations = await uzClient.Station.find("Kyiv");
@@ -20,6 +20,13 @@ async function main() {
   );
 
   console.log(inspect(trains.data, { colors: true, depth: 7 }));
+
+
+  const trainTypes = trains.data.data.trains.map(t => t.wagon_types)
+
+
+  console.log(111, trainTypes);
+
 }
 
 main();

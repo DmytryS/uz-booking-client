@@ -1,4 +1,4 @@
-const Client = require("../../dist").default;
+const Client = require("../../dist");
 const { inspect } = require("util");
 
 async function main() {
