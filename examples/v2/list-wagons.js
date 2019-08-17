@@ -4,7 +4,7 @@ const { inspect } = require("util");
 
 async function main() {
   const ticketsDate = moment().add(10, "days");
-  const uzClient = new Client.apiV2("en");
+  const uzClient = new Client.ApiV2("en");
 
   const departureStations = await uzClient.Station.find("Kyiv");
   const departureStation = departureStations.data[0];

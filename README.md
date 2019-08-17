@@ -33,7 +33,7 @@ const Client = require("uz-booking-client");
 import Client from "uz-booking-client";
 
 const ticketsDate = moment().add(10, "days");
-const uzClient = new Client.apiV2("en");
+const uzClient = new Client.ApiV2("en");
 
 const departureStations = await uzClient.Station.find("Kyiv");
 const departureStation = departureStations.data[0];

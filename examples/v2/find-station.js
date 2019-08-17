@@ -2,7 +2,7 @@ const Client = require("../../dist").default;
 const { inspect } = require("util");
 
 async function main() {
-  const uzClient = new Client.apiV2("en");
+  const uzClient = new Client.ApiV2("en");
 
   const foundStations = await uzClient.Station.find("kyiv");
 

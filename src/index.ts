@@ -1,9 +1,9 @@
-import apiV1 from './v1';
-import apiV2 from './v2';
+import ApiV1 from './v1';
+import ApiV2 from './v2';
 
 const api = {
-  apiV1,
-  apiV2
+  ApiV1,
+  ApiV2
 };
 
 export default api;
