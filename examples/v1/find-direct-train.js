@@ -3,7 +3,7 @@ const moment = require("moment");
 
 async function main() {
   const ticketsDate = moment().add(10, "days");
-  const uzClient = new Client.ApiV1("ru");
+  const uzClient = new Client.ApiV1("en");
 
   const departureStations = await uzClient.Station.find("Kyiv");
   const departureStation = departureStations.data[0];

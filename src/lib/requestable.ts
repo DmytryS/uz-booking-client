@@ -45,9 +45,10 @@ export default class Requestable {
    * @param {Object} [auth] - the credentials to authenticate to Github. If auth is
    *                                  not provided request will be made unauthenticated
    * @param {string} [apiBase] - the base UzBooking API URL
+   * @param {boolen} [langAsApiPrefix] - use language in url as prefix
    */
-  constructor(lang: string, auth: any, apiBase: string) {
-    this.apiBase = apiBase;
+  constructor(lang: string, auth: any, apiBase: string, langAsApiPrefix = false) {
+    this.apiBase = `${apiBase}${langAsApiPrefix ? lang + '/' : ''}`;
     this.lang = lang;
     this.auth = auth;
   }

@@ -10,7 +10,7 @@ export default class Train extends Requestable {
    * @param {string} [apiBase] - the base UzBooking API URL
    */
   constructor(lang: string, auth: any, apiBase: string) {
-    super(lang, auth, apiBase);
+    super(lang, auth, apiBase, true);
   }
 
   /**

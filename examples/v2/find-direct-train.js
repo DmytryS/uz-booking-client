@@ -20,13 +20,6 @@ async function main() {
   );
 
   console.log(inspect(trains.data, { colors: true, depth: 7 }));
-
-
-  const trainTypes = trains.data.data.trains.map(t => t.wagon_types)
-
-
-  console.log(111, trainTypes);
-
 }
 
 main();
