@@ -1,7 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig, Method } from 'axios';
 import * as debug from 'debug';
 import * as generator from 'generate-password';
-import { inspect } from 'util';
 
 const log = debug('uz:requestable');
 
@@ -105,7 +104,7 @@ export default class Requestable {
    * @return {Promise} - the Promise for the http request
    */
   public request(
-    method: string,
+    method: Method,
     path: string,
     data: any,
     dataType = 'json',
@@ -137,10 +136,10 @@ export default class Requestable {
         dataType === 'json' ? this.formatData(data) : this.encodeUrlForm(data);
     }
 
-    const config = {
+    const config: AxiosRequestConfig = {
       data: formatedData,
-      headers,
       method,
+      headers,
       params: queryParams,
       responseType: raw ? 'text' : 'json',
       url
