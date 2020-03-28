@@ -1,8 +1,11 @@
+[![NPM version][npm-version-image]][npm-url]
+[![NPM downloads][npm-downloads-image]][downloads-url]
+[![MIT License][license-image]][license-url]
+[![Build Status][travis-image]][travis-url]
+
 # uz-booking-client
 
 Unofficial uz booking API client for Node.js. https://booking.uz.gov.ua/en/
-
-[![travis build status](https://travis-ci.com/DmytryS/uz-booking-client.svg?branch=master)](https://travis-ci.com/DmytryS/uz-booking-client.svg?branch=master) [![npm version](https://badge.fury.io/js/uz-booking-client.svg)](https://www.npmjs.com/package/uz-booking-client)
 
 ## Installation
 
@@ -103,3 +106,14 @@ if (train.wagon_types.length === 0) {
   //   }
 }
 ```
+
+[npm-url]: https://npmjs.org/package/uz-booking-client
+[npm-version-image]: https://img.shields.io/npm/v/uz-booking-client.svg?style=flat
+[npm-downloads-image]: https://img.shields.io/npm/dm/uz-booking-client.svg?style=flat
+[downloads-url]: https://npmcharts.com/compare/uz-booking-client?minimal=true
+
+[license-image]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat
+[license-url]: LICENSE
+
+[travis-url]: https://travis-ci.com/DmytryS/uz-booking-client
+[travis-image]: https://travis-ci.com/DmytryS/uz-booking-client.svg?branch=master
