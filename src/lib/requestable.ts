@@ -1,8 +1,14 @@
 import axios, { AxiosRequestConfig, Method } from 'axios';
 import * as debug from 'debug';
 import * as generator from 'generate-password';
-
+import * as https from 'https';
 const log = debug('uz:requestable');
+
+const axiosInstance = axios.create({
+  httpsAgent: new https.Agent({
+    rejectUnauthorized: false
+  })
+});
 
 /**
  * The error structure returned when a network call fails
@@ -77,15 +83,18 @@ export default class Requestable {
    */
   public getRequestHeaders() {
     const headers: any = {
+      Accept: '*/*',
+      'Accept-Encoding': 'gzip, deflate, br',
       // 'Accept-Encoding': 'gzip',
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-      // DNT: 1,
-      Host: 'booking.uz.gov.ua'
+      'Content-Type': 'application/x-www-form-urlencoded',
+      DNT: 1,
+      Host: 'booking.uz.gov.ua',
+      Origin: 'https://booking.uz.gov.ua',
       // Referer: 'https://booking.uz.gov.ua/ru/',
       // 'User-Agent':
       //   'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36',
       // 'X-Requested-With': 'XMLHttpRequest'
-      // 'User-Agent': 'Dalvik / 2.1.0(Linux; U; Android 6.0; Android SDK built for x86 Build / MASTER)'
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36',
     };
 
     return headers;
@@ -147,7 +156,7 @@ export default class Requestable {
 
     log(`${config.method} to ${config.url}`);
 
-    const requestPromise = axios(config).catch(
+    const requestPromise = axiosInstance(config).catch(
       this.callbackErrorOrThrow(path, cb)
     );
 

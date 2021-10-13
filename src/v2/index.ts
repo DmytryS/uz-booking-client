@@ -17,7 +17,7 @@ export default class UZ {
    */
   constructor(
     lang: 'en' | 'ru' | 'uk',
-    apiBase = 'https://195.149.70.31/api/',
+    apiBase = 'https://booking.uz.gov.ua/api/', // http://195.149.70.31/api/',
     auth?: any
   ) {
     this.lang = lang;
