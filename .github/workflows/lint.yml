@@ -6,7 +6,7 @@ on:
       - "**"
 
 jobs:
-  publish: 
+  lint: 
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout

@@ -20,9 +20,9 @@ Note: add --save if you are using npm < 5.0.0
 In Node.js:
 
 ```javascript
-import Client from "uz-booking-client";
+import Client from "uz-booking-client"
 //  or
-const Client = require("uz-booking-client");
+const Client = require("uz-booking-client")
 ```
 
 ## Usage
@@ -33,77 +33,114 @@ const Client = require("uz-booking-client");
    or using a new promise-based API. The promise-based API returns the raw Axios
    request promise.
  */
-import Client from "uz-booking-client";
+  import Client from "uz-booking-client"
 
-const ticketsDate = moment().add(10, "days");
-const uzClient = new Client.ApiV2("en");
+  const uzClient = new Client.ApiV3("en")
+  const phoneNumber = await askQuestion('Your phone number: ')
 
-const departureStations = await uzClient.Station.find("Kyiv");
-const departureStation = departureStations.data[0];
+  await uzClient.Auth.sendSms(phoneNumber)
 
-const targetStations = await uzClient.Station.find("Lviv");
-const targetStation = targetStations.data[0];
+  const code = await askQuestion('Code from SMS: ')
 
-const trains = await uzClient.Train.find(
-  departureStation.value,
-  targetStation.value,
-  ticketsDate.format("YYYY-MM-DD"),
-  "00:00"
-);
+  await uzClient.Auth.login(code)
 
-const train = trains.data.data.trains[0]
+  const ticketsDate = moment().add(10, 'days')
 
-if (train.wagon_types.length === 0) {
-  console.log("No free places left in this train.");
-} else {
-  const wagonTypes = train.types.map(type => type.letter);
-  const wagons = await uzClient.Wagon.list(
-      departureStation.value,
-      targetStation.value,
-      ticketsDate.format("YYYY-MM-DD"),
-      train.number
-  );
+  const departureStations = await uzClient.Station.find('Київ')
+  const departureStationId = departureStations[0].id
 
-  const wagon = wagons.data.data.wagons[0];
-  const coaches = await uzClient.Coach.list(
-      departureStation.value,
-      targetStation.value,
-      ticketsDate.format("YYYY-MM-DD"),
-      train.number,
-      wagon.num,
-      wagon.type,
-      wagon.class
-  );
+  const targetStations = await uzClient.Station.find('Львів')
+  const targetStationId = targetStations[0].id
 
-  console.log(coaches.data.data);
-  //   {
-  //     "scheme_type": "К65",
-  //     "model": {
-  //         "floor": {
-  //         "1": {
-  //             "width": 17,
-  //             "height": 5
-  //         }
-  //         }
-  //     },
-  //     "places": {
-  //         "floor": {
-  //             "1": [
-  //                 {
-  //                     "y": 1,
-  //                     "x": 2,
-  //                     "w": 1,
-  //                     "h": 1,
-  //                     "num": "4",
-  //                     "type": "place",
-  //                     "headrest": "left"
+  const trains = await uzClient.Train.find(
+    departureStationId,
+    targetStationId,
+    ticketsDate.format('YYYY-MM-DD'),
+  )
+
+  const tripId = trains[0].id
+  const wagonType = trains[0].train.wagon_classes[0].id
+
+  const wagons = await uzClient.Wagon.list(tripId, wagonType)
+
+  console.dir(wagons, { depth: 20, colors: true })
+
+  // [
+  //     {
+  //         "id": "eyJpdiI6IlZZd1JoeExwYVFadWdOb2JUbEo3eWc9PSIsInZhbHVlIjoiWFRaWUJPNjJkVmw1OUZRcHlMdWtPeUtjZUQrUUE5djdyejF4N3lnUEllVmJOTFVRZWgzelFEN1lFR2VsWmpDSkM0SCtVQnZOcFpIQ1NET0FNOUtNMlFlSjhEbjRNMTFSOEd5UVluZU5sMmgzZTdOeU9yZzJ6cWF1VGlnNEpadjgiLCJtYWMiOiJlODlkYTM5ZTE1OTRjMDgxMDhlNDBmN2M4NDcyMDYxMDJmYjUyNjY1Mjk3YTk1NTQ4ZWY0YzhjMDA1MDRjZjlhIiwidGFnIjoiIn0=",
+  //         "number": "6",
+  //         "mockup_name": "Вагон типу СВ на 20 місць з нижніми місцями",
+  //         "seats": [
+  //             1,
+  //             2,
+  //             5,
+  //             6,
+  //             9,
+  //             10,
+  //             11,
+  //             12,
+  //             13,
+  //             14,
+  //             15,
+  //             16,
+  //             17,
+  //             18,
+  //             19,
+  //             20
+  //         ],
+  //         "free_seats_top": 0,
+  //         "free_seats_lower": 16,
+  //         "price": 164938,
+  //         "air_conditioner": true,
+  //         "services": [
+  //             {
+  //                 "id": "drinks",
+  //                 "title": "Напій",
+  //                 "details": {
+  //                     "photo": null,
+  //                     "content": [
+  //                         {
+  //                             "title": "На вибір:",
+  //                             "description": "Класичний чай, розчинна кава або мінеральна вода 0,5 л.\n"
+  //                         }
+  //                     ]
   //                 },
-  //                 ...
-  //             ]
-  //             ...
-  //         }
-  //     }
-  //   }
+  //                 "price": 1000,
+  //                 "select_type": "units",
+  //                 "select_units_max": 3
+  //             },
+  //             {
+  //                 "id": "tea",
+  //                 "title": "Авторський чай",
+  //                 "details": {
+  //                     "photo": "https://app.uz.gov.ua/img/api/services/tea.jpg",
+  //                     "content": [
+  //                         {
+  //                             "title": "На вибір:",
+  //                             "description": "Карпатський трав’яний чай, подільський чай з м’ятою або поліський чай з чебрецем\n"
+  //                         }
+  //                     ]
+  //                 },
+  //                 "price": 1500,
+  //                 "select_type": "checkbox",
+  //                 "select_units_max": null
+  //             },
+  //             {
+  //                 "id": "drip_coffee",
+  //                 "title": "Дріп кава",
+  //                 "details": {
+  //                     "photo": "https://app.uz.gov.ua/img/api/services/drip_coffee.jpg",
+  //                     "content": [
+  //                         {
+  //                             "title": "Арабіка з Бразилії:",
+  //                             "description": "Натуральна мелена кава в пакетиках для зручного заварювання.\n"
+  //                         }
+  //                     ]
+  //                 },
+  //                 "price": 2500,
+  //                 "select_type": "checkbox",
+  //                 "select_units_max": null
+  //             },
 }
 ```
 
