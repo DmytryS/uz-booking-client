@@ -1,23 +1,23 @@
-import axios, { AxiosRequestConfig, Method } from 'axios';
-import * as debug from 'debug';
-import * as generator from 'generate-password';
-import * as https from 'https';
-const log = debug('uz:requestable');
+import axios, { AxiosRequestConfig, Method, AxiosResponse } from 'axios'
+import * as debug from 'debug'
+import { v4 as uuidv4 } from 'uuid'
+import * as https from 'https'
+const log = debug('uz:requestable')
 
 const axiosInstance = axios.create({
   httpsAgent: new https.Agent({
-    rejectUnauthorized: false
-  })
-});
+    rejectUnauthorized: false,
+  }),
+})
 
 /**
  * The error structure returned when a network call fails
  */
 class ResponseError extends Error {
-  private path: string;
-  private response: any;
-  private status: number;
-  private request: any;
+  private path: string
+  private response: any
+  private status: number
+  private request: any
 
   /**
    * Construct a new ResponseError
@@ -26,11 +26,11 @@ class ResponseError extends Error {
    * @param {Object} response - the object returned by Axios
    */
   constructor(message: string, path: string, response: any) {
-    super(message);
-    this.path = path;
-    this.request = response.config;
-    this.response = (response || {}).response || response;
-    this.status = response.status;
+    super(message)
+    this.path = path
+    this.request = response.config
+    this.response = (response || {}).response || response
+    this.status = response.status
   }
 }
 
@@ -39,10 +39,10 @@ class ResponseError extends Error {
  */
 // tslint:disable-next-line
 export default class Requestable {
-  public apiBase: string;
-  public auth: any;
-  public lang: string;
-  public METHODS_WITH_NO_BODY = ['GET', 'HEAD', 'DELETE'];
+  public apiBase: string
+  public auth: string
+  public lang: string
+  public METHODS_WITH_NO_BODY = ['GET', 'HEAD', 'DELETE']
 
   /**
    * Initialize the http internals.
@@ -52,52 +52,60 @@ export default class Requestable {
    * @param {string} [apiBase] - the base UzBooking API URL
    * @param {boolen} [langAsApiPrefix] - use language in url as prefix
    */
-  constructor(lang: string, auth: any, apiBase: string, langAsApiPrefix = false) {
-    this.apiBase = `${apiBase}${langAsApiPrefix ? lang + '/' : ''}`;
-    this.lang = lang;
-    this.auth = auth;
+  constructor(lang: string, auth: string, apiBase: string, langAsApiPrefix = false) {
+    this.apiBase = `${apiBase}${langAsApiPrefix ? lang + '/' : ''}`
+    this.lang = lang
+    this.auth = auth
   }
 
   /**
    * Compute the URL to use to make a request.
    * @private
    * @param {string} path - either a URL relative to the API base or an absolute URL
-   * @return {string} - the URL to use
+   * @returns {string} - the URL to use
    */
   public getURL(path: string) {
-    let url = path;
+    let url = path
 
     if (path.indexOf('//') === -1) {
-      url = this.apiBase + path;
+      url = this.apiBase + path
     }
 
-    return url;
+    return url
   }
 
   /**
    * Compute the headers required for an API request.
    * @private
-   * @param {boolean} raw - if the request should be treated as JSON or as a raw request
-   * @param {string} AcceptHeader - the accept header for the request
-   * @return {Object} - the headers to use in the request
+   * @param {string} dataType
+   * @param {string} [accessToken]
+   * @returns {Object} - the headers to use in the request
    */
-  public getRequestHeaders() {
+  public getRequestHeaders(dataType, accessToken) {
     const headers: any = {
-      Accept: '*/*',
+      Accept: 'application/json',
       'Accept-Encoding': 'gzip, deflate, br',
       // 'Accept-Encoding': 'gzip',
-      'Content-Type': 'application/x-www-form-urlencoded',
+      ...dataType === 'json'
+        ? { 'Content-Type': 'application/json; charset=UTF-8' }
+        : { 'Content-Type': 'application/x-www-form-urlencoded' },
+      ...accessToken
+        ? {
+          Authorization: accessToken,
+        }
+        : {},
       DNT: 1,
-      Host: 'booking.uz.gov.ua',
-      Origin: 'https://booking.uz.gov.ua',
+      // Host: 'booking.uz.gov.ua',
+      // Origin: 'https://booking.uz.gov.ua',
       // Referer: 'https://booking.uz.gov.ua/ru/',
       // 'User-Agent':
       //   'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36',
       // 'X-Requested-With': 'XMLHttpRequest'
-      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36',
-    };
+      'User-Agent': 'UZ/1.7.3 Android/7.1.2 User/guest',//'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36',
+      'x-client-locale': this.lang,
+    }
 
-    return headers;
+    return headers
   }
 
   /**
@@ -107,42 +115,44 @@ export default class Requestable {
    * @param {*} [data] - the data to send to the server. For HTTP methods that don't have a body the data
    * @param {string} [dataType='json'] - type of data to send
    *                   will be sent as query parameters
-   * @param {Requestable.callback} [cb] - the callback for the request
    * @param {boolean} [raw=false] - if the request should be sent as raw. If this is a falsy value then the
+   * @param {function(error, data, response)} [callback] - the callback for the request
    *                              request will be made as JSON
-   * @return {Promise} - the Promise for the http request
+   * @returns {Promise<AxiosResponse>} - the Promise for the http request
    */
   public request(
     method: Method,
     path: string,
     data: any,
     dataType = 'json',
-    // tslint:disable-next-line
-    cb?: Function,
-    raw = false
-  ) {
-    const url = this.getURL(path);
+    raw = false,
+    callback?: (error: Error, data?: object, response?: object) => any,
+  ): Promise<AxiosResponse> {
+    const url = this.getURL(path)
 
-    const AcceptHeader = (data || {}).AcceptHeader;
+    const AcceptHeader = (data || {}).AcceptHeader
     if (AcceptHeader) {
-      delete data.AcceptHeader;
+      delete data.AcceptHeader
     }
-    const headers = this.getRequestHeaders();
+    const headers = this.getRequestHeaders(dataType, this.auth)
 
-    let queryParams = {};
+    let queryParams = {}
 
     const shouldUseDataAsParams =
-      data && typeof data === 'object' && this.methodHasNoBody(method);
+      data && typeof data === 'object' && this.methodHasNoBody(method)
     if (shouldUseDataAsParams) {
-      queryParams = data;
-      data = undefined;
+      queryParams = data
+      data = undefined
     }
 
-    let formatedData = null;
+    let formatedData = null
 
     if (data) {
-      formatedData =
-        dataType === 'json' ? this.formatData(data) : this.encodeUrlForm(data);
+      if (dataType === 'json') {
+        formatedData = this.formatData(data)
+      } else {
+        formatedData = this.encodeUrlForm(data)
+      }
     }
 
     const config: AxiosRequestConfig = {
@@ -151,36 +161,39 @@ export default class Requestable {
       headers,
       params: queryParams,
       responseType: raw ? 'text' : 'json',
-      url
-    };
+      url,
+    }
 
-    log(`${config.method} to ${config.url}`);
+    log(`${config.method} to ${config.url}`)
 
     const requestPromise = axiosInstance(config).catch(
-      this.callbackErrorOrThrow(path, cb)
-    );
+      this.callbackErrorOrThrow(path, callback),
+    )
 
-    if (cb) {
+    if (callback) {
       requestPromise.then((response: any) => {
         if (response.data && Object.keys(response.data).length > 0) {
-          cb(null, response.data, response);
+          callback(null, response.data, response)
         } else if (
           config.method !== 'GET' &&
           Object.keys(response.data).length < 1
         ) {
-          cb(null, response.status < 300, response);
+          callback(null, {}, response)
         } else {
-          cb(null, response.data, response);
+          callback(null, response.data, response)
         }
-      });
+      })
     }
 
-    return requestPromise;
+    return requestPromise as Promise<AxiosResponse>
   }
-  // tslint:disable-next-line
-  private callbackErrorOrThrow(path: string, cb?: Function) {
+
+  private callbackErrorOrThrow(
+    path: string,
+    cb?: (error: Error, data?: object, response?: object) => any,
+  ) {
     return function handler(object: any) {
-      let error;
+      let error
       if (
         object.config &&
         object.response &&
@@ -189,30 +202,30 @@ export default class Requestable {
       ) {
         const {
           response: { status, statusText },
-          config: { method, url }
-        } = object;
-        const message = `${status} error making request ${method} ${url}: "${statusText}"`;
-        error = new ResponseError(message, path, object);
-        log(`${message} ${JSON.stringify(object.data)}`);
+          config: { method, url },
+        } = object
+        const message = `${status} error making request ${method} ${url}: "${statusText}"`
+        error = new ResponseError(message, path, object)
+        log(`${message} ${JSON.stringify(object.data)}`)
       } else {
-        error = object;
+        error = object
       }
       if (cb) {
-        log('going to error callback');
-        cb(error);
+        log('going to error callback')
+        cb(error)
       } else {
-        log('throwing error');
-        throw error;
+        log('throwing error')
+        throw error
       }
-    };
+    }
   }
 
   private methodHasNoBody(method: string) {
-    return this.METHODS_WITH_NO_BODY.indexOf(method) !== -1;
+    return this.METHODS_WITH_NO_BODY.indexOf(method) !== -1
   }
 
   private formatData(data: any): string {
-    const currentDate: Date = new Date();
+    const currentDate: Date = new Date()
     // tslint:disable-next-line: variable-name
     const datetime_utc =
       currentDate.getUTCFullYear() +
@@ -225,13 +238,9 @@ export default class Requestable {
       ':' +
       ('0' + currentDate.getUTCMinutes()).slice(-2) +
       ':' +
-      ('0' + currentDate.getUTCSeconds()).slice(-2);
+      ('0' + currentDate.getUTCSeconds()).slice(-2)
 
-    const randomId = generator.generate({
-      length: 32,
-      numbers: true,
-      uppercase: false
-    });
+    const randomId = uuidv4()
 
     // for (const k of Object.keys(data.data).filter((t) => ['train', 'wagon_type'].includes(t))) {
     //   data.data[k] = encodeURIComponent(data.data[k]);
@@ -243,14 +252,14 @@ export default class Requestable {
       lang: this.lang,
       os: 1,
       request_id: randomId,
-      version: '1.011'
-    };
+      version: '1.011',
+    }
   }
 
   private encodeUrlForm(form: any): string {
     return Object.keys(form).reduce(
       (p, c) => p + `&${c}=${encodeURIComponent(form[c])}`,
-      ''
-    );
+      '',
+    )
   }
 }

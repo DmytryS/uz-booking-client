@@ -1,5 +1,4 @@
-import Requestable from '../lib/requestable';
-import { Train } from '../models';
+import Requestable from '../lib/requestable'
 
 export default class Wagon extends Requestable {
   /**
@@ -10,7 +9,7 @@ export default class Wagon extends Requestable {
    * @param {string} [apiBase] - the base UzBooking API URL
    */
   constructor(lang: string, auth: any, apiBase: string) {
-    super(lang, auth, apiBase, true);
+    super(lang, auth, apiBase, true)
   }
 
   /**
@@ -20,8 +19,8 @@ export default class Wagon extends Requestable {
    * @param {string} date - departure date
    * @param {string} trainNumber - train number
    * @param {string} wagonType - wagon type
-   * @param {Function} cb - callback function
-   * @return {Promise} - the promise for the http request
+   * @param {Function} callback - callback function
+   * @returns {Promise} - the promise for the http request
    */
   public list(
     from: number,
@@ -30,7 +29,7 @@ export default class Wagon extends Requestable {
     trainNumber: string,
     wagonType: string,
     // tslint:disable-next-line
-    cb: Function
+    callback?: (error: Error, data?: object, response?: object) => any,
   ) {
     return this.request(
       'POST',
@@ -40,10 +39,11 @@ export default class Wagon extends Requestable {
         from,
         to,
         train: trainNumber,
-        wagon_type_id: wagonType
+        wagon_type_id: wagonType,
       },
       'form',
-      cb
-    );
+      false,
+      callback,
+    )
   }
 }

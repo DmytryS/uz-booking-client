@@ -1,4 +1,4 @@
-import Requestable from '../lib/requestable';
+import Requestable from '../lib/requestable'
 
 export default class Station extends Requestable {
   /**
@@ -9,23 +9,27 @@ export default class Station extends Requestable {
    * @param {string} [apiBase] - the base UzBooking API URL
    */
   constructor(lang: string, auth: any, apiBase: string) {
-    super(lang, auth, apiBase, true);
+    super(lang, auth, apiBase, true)
   }
 
   /**
    * Find station by name
    * @param {string} stationName - the name of station
    * @param {Function} cb - callback function
-   * @return {Promise} - the promise for the http request
+   * @returns {Promise} - the promise for the http request
    */
   // tslint:disable-next-line
-  public find(stationName: string, cb: Function) {
+  public find(
+    stationName: string,
+    callback?: (error: Error, data?: object, response?: object) => any,
+  ) {
     return this.request(
       'POST',
       `train_search/station/?term=${encodeURIComponent(stationName)}/`,
       null,
       'form',
-      cb
-    );
+      false,
+      callback,
+    )
   }
 }
