@@ -2,7 +2,8 @@ import Requestable from '../lib/requestable'
 
 export default class Wagon extends Requestable {
   /**
-   * Construct station class.
+   * Construct wagon class.
+   * @constructor
    * @param {string} [lang] - language
    * @param {auth} [auth] - the credentials to authenticate to UzBoojking. If auth is
    *                                  not provided requests will be made unauthenticated
@@ -13,39 +14,27 @@ export default class Wagon extends Requestable {
   }
 
   /**
-   * Find station by name
-   * @param {number} from - departure station id
-   * @param {number} to - target station id
-   * @param {string} date - departure date
-   * @param {string} trainNumber - train number
+   * List wagons by type
+   * @param {number} tripId
    * @param {string} wagonType - wagon type
-   * @param {Function} callback - callback function
+   * @param {Function} [callback] - callback function
    * @returns {Promise} - the promise for the http request
    */
-  public list(
-    from: number,
-    to: number,
-    date: string,
-    trainNumber: string,
+  public async list(
+    tripId: string,
     wagonType: string,
     // tslint:disable-next-line
     callback?: (error: Error, data?: object, response?: object) => any,
   ) {
-    return this.request(
-      'POST',
-      '',
-      {
-        data: {
-          date,
-          from_code: from,
-          to_code: to,
-          train: trainNumber,
-        },
-        tran_id: 'wagons',
-      },
+    const response = await this.request(
+      'GET',
+      `/api/v2/trips/${tripId}/wagons-by-class/${wagonType}`,
+      null,
       'json',
       false,
       callback,
     )
+
+    return response.data
   }
 }

@@ -1,5 +1,4 @@
-import Requestable from '../lib/requestable';
-import { Station } from '../models';
+import Requestable from '../lib/requestable'
 
 export default class Train extends Requestable {
   /**
@@ -10,7 +9,7 @@ export default class Train extends Requestable {
    * @param {string} [apiBase] - the base UzBooking API URL
    */
   constructor(lang: string, auth: any, apiBase: string) {
-    super(lang, auth, apiBase, true);
+    super(lang, auth, apiBase, true)
   }
 
   /**
@@ -19,8 +18,8 @@ export default class Train extends Requestable {
    * @param {number} to - target station id
    * @param {string} date - departure date
    * @param {string} time - departure time
-   * @param {Function} cb - callback function
-   * @return {Promise} - the promise for the http request
+   * @param {Function} callback - callback function
+   * @returns {Promise} - the promise for the http request
    */
   public find(
     from: number,
@@ -28,7 +27,7 @@ export default class Train extends Requestable {
     date: string,
     time: string,
     // tslint:disable-next-line
-    cb: Function
+    callback?: (error: Error, data?: object, response?: object) => any,
   ) {
     return this.request(
       'POST',
@@ -39,13 +38,14 @@ export default class Train extends Requestable {
           from_code: from,
           time_from: time,
           time_to: '23:59:59',
-          to_code: to
+          to_code: to,
         },
-        tran_id: 'trains'
+        tran_id: 'trains',
       },
       'form',
-      cb
-    );
+      false,
+      callback,
+    )
   }
 
   /**
@@ -54,8 +54,8 @@ export default class Train extends Requestable {
    * @param {number} to - target station id
    * @param {string} date - departure date
    * @param {string} time - departure time
-   * @param {Function} cb - callback function
-   * @return {Promise} - the promise for the http request
+   * @param {Function} callback - callback function
+   * @returns {Promise} - the promise for the http request
    */
   public findInterchange(
     from: number,
@@ -63,7 +63,7 @@ export default class Train extends Requestable {
     date: string,
     time: string,
     // tslint:disable-next-line
-    cb: Function
+    callback?: (error: Error, data?: object, response?: object) => any,
   ) {
     return this.request(
       'POST',
@@ -72,10 +72,11 @@ export default class Train extends Requestable {
         date,
         from,
         time,
-        to
+        to,
       },
       'form',
-      cb
-    );
+      false,
+      callback,
+    )
   }
 }

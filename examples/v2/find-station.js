@@ -1,12 +1,11 @@
-const Client = require("../../dist");
-const { inspect } = require("util");
+const Client = require('../../dist')
 
 async function main() {
-  const uzClient = new Client.ApiV2("en");
+  const uzClient = new Client.ApiV2('en')
 
-  const foundStations = await uzClient.Station.find("kyiv");
+  const stationsResponse = await uzClient.Station.find('kyiv')
 
-  console.log(inspect(foundStations.data, { colors: true, depth: 8 }));
+  console.dir(stationsResponse.data, { depth: 20, colors: true })
 }
 
-main();
+main()
