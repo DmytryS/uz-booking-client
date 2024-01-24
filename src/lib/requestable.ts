@@ -43,7 +43,7 @@ export default class Requestable {
   public auth: string
   public lang: string
   public METHODS_WITH_NO_BODY = ['GET', 'HEAD', 'DELETE']
-
+  static _clientId: string
   /**
    * Initialize the http internals.
    * @param {string} [lang] - language
@@ -82,6 +82,7 @@ export default class Requestable {
    * @returns {Object} - the headers to use in the request
    */
   public getRequestHeaders(dataType, accessToken) {
+    const clientId = Requestable._clientId ? Requestable._clientId : "guest";
     const headers: any = {
       Accept: 'application/json',
       'Accept-Encoding': 'gzip, deflate, br',
@@ -101,7 +102,7 @@ export default class Requestable {
       // 'User-Agent':
       //   'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36',
       // 'X-Requested-With': 'XMLHttpRequest'
-      'User-Agent': 'UZ/1.7.3 Android/7.1.2 User/guest',//'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36',
+      'User-Agent': 'UZ/1.11.1 Android/7.1.2 User/'+ clientId, //'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36',
       'x-client-locale': this.lang,
     }
 

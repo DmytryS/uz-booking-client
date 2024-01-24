@@ -8,6 +8,7 @@ export default class Auth extends Requestable {
   deviceName: string
   phoneNumber: string
   private _accessToken: string
+  
 
   /**
    * Construct auth class.
@@ -84,6 +85,8 @@ export default class Auth extends Requestable {
 
     if (authResponse) {
       this._accessToken = authResponse.data?.token?.access_token
+      Requestable._clientId = authResponse.data?.profile?.id
+      
 
       if (callback) {
         return callback(undefined, authResponse.data?.token, authResponse)
